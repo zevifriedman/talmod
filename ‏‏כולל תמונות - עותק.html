@@ -1,0 +1,595 @@
+<html><head><base href="https://websim.ai" />
+<title>מרכז התלמוד הדיגיטלי</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;700&family=Noto+Serif+Hebrew:wght@400;700&display=swap" rel="stylesheet">
+<style>
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.video-foreground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.video-foreground iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform: scale(1.5); 
+}
+
+
+
+:root {
+  --primary-color: #8B4513;
+  --secondary-color: #D2691E;
+  --background-color: #F4ECD8;
+  --text-color: #2F4F4F;
+  --accent-color: #CD853F;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff8dcca;
+  border-radius: 10px;
+  box-shadow: 0 0 20px var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+h1 {
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+.scroll {
+  max-width: 15%;
+  height: auto;
+  margin-top: 2rem;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.search-container {
+  background-color: #FAEBD7;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.file-upload {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.file-upload-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: #FFF8DC;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.file-upload-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+.file-upload input[type="file"] {
+  display: none;
+}
+
+.search-option {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #FFF8DC;
+  color: var(--text-color);
+}
+
+input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--shadow-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: #FFF8DC;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+#result {
+  background-color: #FAEBD7;
+  border-radius: 10px;
+  padding: 2rem;
+  min-height: 200px;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: var(--secondary-color);
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.feature-item {
+  background-color: #FAEBD7;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.feature-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--secondary-color);
+}
+
+.switch-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 0 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.switch-label {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #FAEBD7;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+}
+.quill {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  width: 170px; /* גודל חדש של התמונה */
+  height: auto; /* שמירה על יחסי תצוגה */
+  opacity: 0.7; /* שינוי במידת השקיפות */
+}
+
+
+</style>
+</head>
+<body>
+  <div class="video-background">
+    <div class="video-foreground">
+      <iframe src="https://www.youtube.com/embed/8OdODjARPGU?autoplay=1&mute=1&loop=1&playlist=8OdODjARPGU&start=10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+  
+
+<div class="container">
+  <header>
+    <h1>מרכז התלמוד הדיגיטלי</h1>
+    <p class="subtitle">שער לעולם החכמה העתיקה בעידן המודרני</p>
+    <img src="C:\Users\JBH\Downloads\ZEVI_FRIEDMAN-removebg-preview.png" alt="Scroll" class="scroll">
+  </header>
+  <div class="content">
+    <div class="search-container">
+      <div class="file-upload">
+        <label for="file-input" class="file-upload-btn">בחר קובץ תלמוד</label>
+        <input type="file" id="file-input" accept=".txt">
+      </div>
+      <div class="switch-container">
+        <span class="switch-label">חיפוש דף</span>
+        <label class="switch">
+          <input type="checkbox" id="search-toggle">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-label">חיפוש ציטוט</span>
+      </div>
+      <div id="daf-search">
+        <div class="search-option">
+          <label for="masechet">מסכת:</label>
+          <input type="text" id="masechet" placeholder="הכנס שם מסכת">
+        </div>
+        <div class="search-option">
+          <label for="daf">דף:</label>
+          <input type="text" id="daf" placeholder="הכנס מספר דף">
+        </div>
+        <div class="search-option">
+          <label for="amud">עמוד:</label>
+          <select id="amud">
+            <option value="א">א</option>
+            <option value="ב">ב</option>
+          </select>
+        </div>
+      </div>
+      <div id="quote-search" style="display: none;">
+        <div class="search-option">
+          <label for="quote">ציטוט:</label>
+          <input type="text" id="quote" placeholder="הכנס ציטוט לחיפוש">
+        </div>
+      </div>
+      <button id="search-button">חפש</button>
+    </div>
+    <div id="result"></div>
+  </div>
+  <div>
+    <h4>.</h4>
+  </div>
+  <div class="feature-list">
+    <div class="feature-item">
+      <div class="feature-icon">📜</div>
+      <h3 class="feature-title">ארכיון דיגיטלי</h3>
+      <p>גישה למאגר עצום של טקסטים תלמודיים</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔍</div>
+      <h3 class="feature-title">חיפוש מתקדם</h3>
+      <p>מנוע חיפוש חכם לאיתור מהיר ומדויק</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📚</div>
+      <h3 class="feature-title">לימוד אינטראקטיבי</h3>
+      <p>כלים חדשניים ללימוד והעמקה בתלמוד</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🌐</div>
+      <h3 class="feature-title">קהילה גלובלית</h3>
+      <p>חיבור ללומדים ומלומדים מכל העולם</p>
+    </div>
+  </div>
+  <div class="statistics">
+    <div class="stat-item">
+      <div class="stat-value">63</div>
+      <div class="stat-label">מסכתות</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2,711</div>
+      <div class="stat-label">דפים</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">1,500,000+</div>
+      <div class="stat-label">מילים</div>
+    </div>
+  </div>
+  <img src="C:\Users\JBH\Downloads\JBH-LOGO-02-1.png" alt="Quill" class="quill">
+</div>
+
+<script>
+const fileInput = document.getElementById('file-input');
+const searchToggle = document.getElementById('search-toggle');
+const dafSearch = document.getElementById('daf-search');
+const quoteSearch = document.getElementById('quote-search');
+const searchButton = document.getElementById('search-button');
+const resultDiv = document.getElementById('result');
+
+let talmudData = {};
+
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const contents = e.target.result;
+            processTalmudFile(contents);
+        };
+        reader.readAsText(file);
+    }
+});
+
+function processTalmudFile(contents) {
+    const lines = contents.split('\n');
+    talmudData = {};
+    let currentMasechet = '';
+    let currentPerek = '';
+    let currentDaf = '';
+    let currentAmud = '';
+    let currentContent = '';
+
+    lines.forEach(line => {
+        if (line.startsWith('מסכת')) {
+            const parts = line.split(' ');
+            currentMasechet = parts[1];
+            currentPerek = parts[3];
+            if (!talmudData[currentMasechet]) {
+                talmudData[currentMasechet] = {};
+            }
+            if (!talmudData[currentMasechet][currentPerek]) {
+                talmudData[currentMasechet][currentPerek] = {};
+            }
+        } else if (line.startsWith('דף')) {
+            if (currentContent) {
+                if (!talmudData[currentMasechet][currentPerek][currentDaf]) {
+                    talmudData[currentMasechet][currentPerek][currentDaf] = {};
+                }
+                talmudData[currentMasechet][currentPerek][currentDaf][currentAmud] = currentContent.trim();
+            }
+            const parts = line.split(' ');
+            currentDaf = parts[1];
+            currentAmud = parts[2];
+            currentContent = '';
+        } else {
+            currentContent += line + ' ';
+        }
+    });
+
+    if (currentContent) {
+        if (!talmudData[currentMasechet][currentPerek][currentDaf]) {
+            talmudData[currentMasechet][currentPerek][currentDaf] = {};
+        }
+        talmudData[currentMasechet][currentPerek][currentDaf][currentAmud] = currentContent.trim();
+    }
+
+    alert('הקובץ נטען בהצלחה!');
+}
+
+searchToggle.addEventListener('change', () => {
+    if (searchToggle.checked) {
+        dafSearch.style.display = 'none';
+        quoteSearch.style.display = 'block';
+    } else {
+        dafSearch.style.display = 'block';
+        quoteSearch.style.display = 'none';
+    }
+});
+
+searchButton.addEventListener('click', () => {
+    if (Object.keys(talmudData).length === 0) {
+        alert('אנא טען קובץ תלמוד תחילה.');
+        return;
+    }
+    resultDiv.innerHTML = '<p class="loading">מחפש...</p>';
+    setTimeout(() => {
+        performSearch();
+    }, 1000);
+});
+
+function performSearch() {
+    if (!searchToggle.checked) {
+        const masechet = document.getElementById('masechet').value;
+        const daf = document.getElementById('daf').value;
+        const amud = document.getElementById('amud').value;
+
+        let found = false;
+        if (talmudData[masechet]) {
+            for (const perek in talmudData[masechet]) {
+                if (talmudData[masechet][perek][daf] && talmudData[masechet][perek][daf][amud]) {
+                    resultDiv.innerHTML = `<h2>תוצאה:</h2><p>${talmudData[masechet][perek][daf][amud]}</p>`;
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            resultDiv.innerHTML = '<p class="loading">לא נמצאה תוצאה.</p>';
+        }
+    } else {
+        const quote = document.getElementById('quote').value.trim();
+        let found = false;
+
+        for (const masechet in talmudData) {
+            for (const perek in talmudData[masechet]) {
+                for (const daf in talmudData[masechet][perek]) {
+                    for (const amud in talmudData[masechet][perek][daf]) {
+                        if (talmudData[masechet][perek][daf][amud].includes(quote)) {
+                            resultDiv.innerHTML = `<h2>תוצאה במסכת ${masechet} פרק ${perek} דף ${daf} עמוד ${amud}:</h2><p>${talmudData[masechet][perek][daf][amud]}</p>`;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+                if (found) break;
+            }
+            if (found) break;
+        }
+
+        if (!found) {
+            resultDiv.innerHTML = '<p class="loading">לא נמצאה תוצאה.</p>';
+        }
+    }
+}
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCNyjCbZlcFsAE4v-ZumDLyHAitLWCG1Io",
+    authDomain: "talmod.firebaseapp.com",
+    projectId: "talmod",
+    storageBucket: "talmod.appspot.com",
+    messagingSenderId: "288715192080",
+    appId: "1:288715192080:web:373d4a28a4b3cc99809795",
+    measurementId: "G-SVNHCZ70LD"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
